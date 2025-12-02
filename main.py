@@ -1,31 +1,42 @@
-from recbole.config import Config
-from recbole.data import create_dataset, data_preparation
-from recbole.model.general_recommender import LightGCN
-from recbole.trainer import Trainer
-
+from evaluation import model_tests, create_result_file
 from codecarbon import EmissionsTracker
 
-dataset_name = 'amazon_books_60core_train_65_newest_ratings_each_user'
+if __name__ == "__main__":
 
-config_params = {
-    'dataset': dataset_name,
-    'USER_ID_FIELD': 'user_id',
-    'ITEM_ID_FIELD': 'item_id',
-    'RATING_FIELD': 'rating',
-    'TIME_FIELD': 'timestamp',
-    'load_col': {
-        'inter': [
-            'user_id',
-            'item_id',
-            'rating',
-            'timestamp',
-        ]
-    },
-    'reproducibility': True,
-    'save_dataset': True,
-    'save_dataloaders': True,
-    'threshold': {
-        'rating': 3,
-    },
-    'repeatable': True
-}
+    """
+    Sets RecBole framework configuration and runs model tests.
+    Tests are wrapped by CodeCarbon power usage tracking script.
+    """
+
+    config = {
+        'dataset': 'amazon_books_60core_train_65_newest_ratings_each_user',
+        'benchmark_filename': ['train', 'valid', 'test'],
+        'epochs': 200,
+        'embedding_size': 64,
+        'n_layers': 2,
+        'reg_weight': 1e-05,
+        'metrics': [
+            'Precision', 'Recall', 'MAP', 'GAUC',
+            'MRR', 'NDCG', 'Hit',
+            'AveragePopularity', 'ItemCoverage', 'TailPercentage',
+            'GiniIndex', 'ShannonEntropy'
+        ],
+        'top_k': 10,
+        'seed': 2020,
+        'reproducibility': True,
+        'show_progress': True,
+        'save_dataset': False,
+        'save_dataloaders': False,
+        'repeatable': False,
+    }
+
+    tracker = EmissionsTracker()
+    tracker.start()
+
+    try:
+
+        create_result_file(config['metrics'])
+        model_tests(config)
+
+    finally:
+        _ = tracker.stop()
