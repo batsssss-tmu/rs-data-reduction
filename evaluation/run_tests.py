@@ -4,11 +4,12 @@ from evaluation import record_result
 
 from recbole.config import Config
 from recbole.data import create_dataset, data_preparation
+from recbole.model.general_recommender import BPR
 from recbole.model.general_recommender import LightGCN
 from recbole.trainer import Trainer
 from recbole.utils import utils
 
-models = ['LightGCN']
+models = ['LightGCN', 'BPR']
 
 
 def model_tests(config_params):
