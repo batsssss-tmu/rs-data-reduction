@@ -32,7 +32,10 @@ def model_tests(config_params):
         print(indent + 'Model:', model_name)
         print(indent + indent + 'preparing data...')
 
-        run_params = {'model': model_name}
+        run_params = {
+            'model': model_name,
+            'dataset': config_params['dataset_alias'],
+        }
 
         config = Config(model=model_name, config_dict=config_params)
         dataset = create_dataset(config)

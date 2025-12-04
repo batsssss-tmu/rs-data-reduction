@@ -10,6 +10,7 @@ if __name__ == "__main__":
 
     config = {
         'dataset': 'amazon_books_60core_train_65_newest_ratings_each_user',
+        'dataset_alias': 'amz_65_newest',
         'benchmark_filename': ['train', 'valid', 'test'],
         'epochs': 200,
         'embedding_size': 64,

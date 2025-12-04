@@ -21,7 +21,7 @@ def create_result_file(metrics):
 
     if not output_path.is_file():
 
-        headers = ['Model', 'Stage']
+        headers = ['Model', 'Dataset', 'Stage']
         headers.extend(metrics)
         headers.extend(['Start Time', 'Duration (s)'])
 
